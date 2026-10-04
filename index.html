@@ -1,0 +1,1869 @@
+<title>Sổ Tay Từ Vựng</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;600;700&display=swap">
+<style>
+  :root{
+    --paper: #EEF0E6;
+    --card: #FBFAF3;
+    --ink: #23261E;
+    --muted: #726F5E;
+    --rule: #6E86A3;
+    --rule-faint: rgba(110,134,163,0.22);
+    --accent: #A23B32;
+    --accent-ink: #FBFAF3;
+    --learned: #4C7A5D;
+    --learned-bg: rgba(76,122,93,0.14);
+    --danger: #A23B32;
+    --shadow: 0 18px 40px -22px rgba(35,38,30,0.35), 0 2px 6px rgba(35,38,30,0.08);
+    --focus: #3A6EA5;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper: #15170F;
+      --card: #23261D;
+      --ink: #ECE8D9;
+      --muted: #A19D87;
+      --rule: #7C93A8;
+      --rule-faint: rgba(124,147,168,0.18);
+      --accent: #E07A6B;
+      --accent-ink: #1B1D15;
+      --learned: #86C398;
+      --learned-bg: rgba(134,195,152,0.14);
+      --danger: #E07A6B;
+      --shadow: 0 18px 40px -20px rgba(0,0,0,0.6), 0 2px 6px rgba(0,0,0,0.3);
+      --focus: #7FB3E0;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper: #15170F;
+    --card: #23261D;
+    --ink: #ECE8D9;
+    --muted: #A19D87;
+    --rule: #7C93A8;
+    --rule-faint: rgba(124,147,168,0.18);
+    --accent: #E07A6B;
+    --accent-ink: #1B1D15;
+    --learned: #86C398;
+    --learned-bg: rgba(134,195,152,0.14);
+    --danger: #E07A6B;
+    --shadow: 0 18px 40px -20px rgba(0,0,0,0.6), 0 2px 6px rgba(0,0,0,0.3);
+    --focus: #7FB3E0;
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Work Sans', 'Noto Sans JP', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .app{
+    max-width:760px;
+    margin:0 auto;
+    padding:28px 20px 64px;
+  }
+  h1,h2,h3{text-wrap:balance;}
+
+  /* header */
+  .masthead{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:12px;
+    margin-bottom:22px;
+  }
+  .masthead .brand{
+    font-family:'Fraunces', Georgia, serif;
+    font-size:1.5rem;
+    font-weight:600;
+    letter-spacing:-0.01em;
+  }
+  .masthead .brand em{
+    font-style:normal;
+    color:var(--accent);
+  }
+  .masthead .sub{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.72rem;
+    letter-spacing:0.06em;
+    color:var(--muted);
+    text-transform:uppercase;
+  }
+
+  /* tabs styled as card-catalog divider tabs */
+  .tabs{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+    margin-bottom:0;
+    position:relative;
+    z-index:1;
+  }
+  .tab-btn{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.78rem;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+    background:var(--rule-faint);
+    color:var(--muted);
+    border:1px solid transparent;
+    border-bottom:none;
+    padding:10px 18px 12px;
+    border-radius:8px 8px 0 0;
+    cursor:pointer;
+    transition:background .15s ease, color .15s ease;
+  }
+  .tab-btn:hover{ color:var(--ink); }
+  .tab-btn.active{
+    background:var(--card);
+    color:var(--accent);
+    font-weight:600;
+    box-shadow: 0 -1px 0 var(--card);
+  }
+  .tab-btn:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, [tabindex]:focus-visible{
+    outline:2px solid var(--focus);
+    outline-offset:2px;
+  }
+  .panel-surface{
+    background:var(--card);
+    border-radius:0 10px 10px 10px;
+    padding:28px 24px 32px;
+    box-shadow:var(--shadow);
+  }
+
+  /* ---------- TODAY VIEW ---------- */
+  .today-head{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:12px;
+    margin-bottom:22px;
+    padding-bottom:14px;
+    border-bottom:1px solid var(--rule-faint);
+  }
+  .today-title{
+    font-family:'Fraunces', 'Noto Sans JP', Georgia, serif;
+    font-size:1.35rem;
+    font-weight:600;
+    margin:0;
+  }
+  .today-date{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.7rem;
+    letter-spacing:0.05em;
+    color:var(--muted);
+    margin-top:3px;
+  }
+  .today-progress{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.82rem;
+    font-variant-numeric:tabular-nums;
+    color:var(--accent);
+    border:1.5px solid var(--accent);
+    border-radius:20px;
+    padding:5px 12px;
+    white-space:nowrap;
+  }
+  .today-progress.is-complete{
+    color:var(--learned);
+    border-color:var(--learned);
+  }
+
+  .reminder-box{
+    margin-top:26px;
+    padding-top:16px;
+    border-top:1px solid var(--rule-faint);
+  }
+  .reminder-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+  .reminder-toggle{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-size:0.88rem;
+    color:var(--ink);
+    cursor:pointer;
+  }
+  .reminder-toggle input{
+    width:16px;
+    height:16px;
+    accent-color:var(--accent);
+    cursor:pointer;
+  }
+  .reminder-time{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.85rem;
+    color:var(--ink);
+    background:var(--paper);
+    border:1px solid var(--rule-faint);
+    border-radius:5px;
+    padding:6px 8px;
+  }
+  .reminder-note{
+    font-size:0.78rem;
+    line-height:1.45;
+    color:var(--muted);
+    margin-top:8px;
+  }
+  .reminder-note.is-warning{ color:var(--accent); }
+
+  /* ---------- STUDY VIEW ---------- */
+  .empty-state{
+    text-align:center;
+    padding:48px 20px;
+    color:var(--muted);
+  }
+  .empty-state p{ margin:0 0 18px; font-size:0.95rem; }
+
+  .card-wrap{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+  }
+  .index-card{
+    position:relative;
+    width:100%;
+    max-width:520px;
+    min-height:340px;
+    background:
+      repeating-linear-gradient(
+        to bottom,
+        transparent 0px, transparent 43px,
+        var(--rule-faint) 43px, var(--rule-faint) 44px
+      );
+    background-color:var(--card);
+    border-radius:8px;
+    box-shadow:var(--shadow);
+    padding:22px 26px 26px 46px;
+    overflow:hidden;
+  }
+  .index-card::before{
+    content:"";
+    position:absolute;
+    left:26px; top:0; bottom:0;
+    width:2px;
+    background:var(--accent);
+    opacity:0.55;
+  }
+  .card-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    margin-bottom:8px;
+  }
+  .counter{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.75rem;
+    color:var(--muted);
+    letter-spacing:0.04em;
+    padding-top:4px;
+    text-align:right;
+  }
+  .lang-tag{
+    display:inline-block;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.65rem;
+    letter-spacing:0.06em;
+    color:var(--rule);
+    border:1px solid var(--rule-faint);
+    border-radius:4px;
+    padding:1px 6px;
+    margin-left:8px;
+    vertical-align:1px;
+  }
+  .done-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.7rem;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    background:none;
+    border:1.5px solid var(--learned);
+    color:var(--learned);
+    padding:6px 12px;
+    border-radius:20px;
+    cursor:pointer;
+    transition:background .15s ease, color .15s ease;
+  }
+  .done-btn svg{ width:12px; height:12px; }
+  .done-btn:hover{ background:var(--learned); color:var(--card); }
+
+  .relearn-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.7rem;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    background:none;
+    border:1.5px solid var(--rule);
+    color:var(--rule);
+    padding:6px 12px;
+    border-radius:20px;
+    cursor:pointer;
+    transition:background .15s ease, color .15s ease;
+  }
+  .relearn-btn svg{ width:12px; height:12px; }
+  .relearn-btn:hover{ background:var(--rule); color:var(--card); }
+
+  .headword-zone{
+    padding:14px 0 10px;
+    cursor:pointer;
+    user-select:none;
+  }
+  .headword{
+    font-family:'Fraunces', 'Noto Sans JP', Georgia, serif;
+    font-size:clamp(2.1rem, 6vw, 3rem);
+    font-weight:600;
+    letter-spacing:-0.01em;
+    line-height:1.05;
+    margin:0;
+    text-wrap:balance;
+  }
+  .phonetic-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-top:10px;
+  }
+  .phonetic{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.95rem;
+    color:var(--muted);
+  }
+  .speak-btn{
+    width:32px; height:32px;
+    border-radius:50%;
+    border:1.5px solid var(--rule);
+    background:transparent;
+    color:var(--rule);
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    flex:none;
+    transition:background .15s ease, color .15s ease;
+  }
+  .speak-btn:hover:not(:disabled){ background:var(--rule); color:var(--card); }
+  .speak-btn:disabled{ opacity:0.35; cursor:not-allowed; }
+  .speak-btn svg{ width:15px; height:15px; }
+
+  .reveal-hint{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.68rem;
+    letter-spacing:0.05em;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin-top:12px;
+    opacity:0.85;
+  }
+
+  .reveal{
+    display:grid;
+    grid-template-rows:0fr;
+    transition:grid-template-rows .32s ease;
+  }
+  .reveal.open{ grid-template-rows:1fr; }
+  .reveal-inner{ overflow:hidden; }
+  @media (prefers-reduced-motion:reduce){
+    .reveal{ transition:none; }
+  }
+  .reveal-content{
+    padding-top:16px;
+    margin-top:10px;
+    border-top:1px solid var(--rule-faint);
+  }
+  .field-label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.68rem;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--rule);
+    margin:0 0 4px;
+  }
+  .meaning-text{
+    margin:0 0 16px;
+    font-size:1rem;
+    line-height:1.5;
+  }
+  .example-text{
+    margin:0;
+    font-size:0.95rem;
+    line-height:1.5;
+    font-style:italic;
+    color:var(--ink);
+    opacity:0.88;
+  }
+
+  .nav-row{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:14px;
+    margin-top:22px;
+  }
+  .nav-btn{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.78rem;
+    letter-spacing:0.03em;
+    text-transform:uppercase;
+    background:transparent;
+    border:1.5px solid var(--accent);
+    color:var(--accent);
+    padding:10px 18px;
+    border-radius:5px;
+    cursor:pointer;
+    transition:background .15s ease, color .15s ease;
+  }
+  .nav-btn:hover{ background:var(--accent); color:var(--accent-ink); }
+  .kbd-hint{
+    text-align:center;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.7rem;
+    color:var(--muted);
+    margin-top:12px;
+  }
+  .kbd-hint kbd{
+    font-family:inherit;
+    border:1px solid var(--muted);
+    border-radius:3px;
+    padding:0 5px;
+  }
+  .progress-line{
+    text-align:center;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.7rem;
+    color:var(--learned);
+    margin-top:6px;
+  }
+  .all-done-title{
+    font-family:'Fraunces', 'Noto Sans JP', Georgia, serif;
+    font-size:1.25rem;
+    color:var(--learned);
+    margin:0 0 8px;
+  }
+  .celebrate-badge{
+    color:var(--learned);
+    margin-bottom:10px;
+    animation:badge-pop .45s cubic-bezier(.2,.9,.3,1.2) both;
+  }
+  .celebrate-badge svg{ width:72px; height:72px; }
+  @keyframes badge-pop{
+    from{ opacity:0; transform:scale(.72); }
+    to{ opacity:1; transform:scale(1); }
+  }
+  @media (prefers-reduced-motion:reduce){
+    .celebrate-badge{ animation:none; }
+  }
+  .today-done-count{
+    font-size:0.98rem;
+    color:var(--ink);
+    margin:0 0 6px;
+  }
+
+  /* ---------- LIST VIEW ---------- */
+  .list-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    margin-bottom:20px;
+    flex-wrap:wrap;
+  }
+  .list-head h2{
+    font-family:'Fraunces', Georgia, serif;
+    font-size:1.4rem;
+    font-weight:600;
+    margin:0;
+  }
+  .list-count{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.78rem;
+    color:var(--muted);
+    margin-left:10px;
+  }
+  .btn-solid{
+    font-family:'Work Sans', sans-serif;
+    font-weight:600;
+    font-size:0.88rem;
+    background:var(--accent);
+    color:var(--accent-ink);
+    border:none;
+    padding:10px 16px;
+    border-radius:6px;
+    cursor:pointer;
+    transition:filter .15s ease;
+  }
+  .btn-solid:hover{ filter:brightness(1.08); }
+  .btn-ghost{
+    font-family:'Work Sans', sans-serif;
+    font-weight:600;
+    font-size:0.88rem;
+    background:transparent;
+    color:var(--muted);
+    border:1.5px solid var(--rule-faint);
+    padding:9px 16px;
+    border-radius:6px;
+    cursor:pointer;
+  }
+  .btn-ghost:hover{ color:var(--ink); border-color:var(--rule); }
+
+  .search-row{
+    position:relative;
+    display:flex;
+    align-items:center;
+    margin-bottom:8px;
+  }
+  .search-icon{
+    position:absolute;
+    left:11px;
+    width:15px;
+    height:15px;
+    color:var(--muted);
+    pointer-events:none;
+  }
+  .search-input{
+    width:100%;
+    font-family:'Work Sans', 'Noto Sans JP', sans-serif;
+    font-size:0.92rem;
+    color:var(--ink);
+    background:var(--paper);
+    border:1px solid var(--rule-faint);
+    border-radius:6px;
+    padding:10px 34px 10px 34px;
+  }
+  .search-input::placeholder{ color:var(--muted); }
+  .search-clear{
+    position:absolute;
+    right:8px;
+    width:22px;
+    height:22px;
+    line-height:1;
+    font-size:1.1rem;
+    border:none;
+    border-radius:50%;
+    background:var(--rule-faint);
+    color:var(--ink);
+    cursor:pointer;
+  }
+  .search-status{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.7rem;
+    color:var(--muted);
+    margin-bottom:14px;
+  }
+
+  .list-section{ margin-bottom:26px; }
+  .list-section:last-child{ margin-bottom:0; }
+  .section-title{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.72rem;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin:0 0 8px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .section-title-done{ color:var(--learned); }
+  .section-count{
+    font-size:0.68rem;
+    letter-spacing:0.04em;
+    color:var(--muted);
+    border:1px solid var(--rule-faint);
+    border-radius:20px;
+    padding:1px 8px;
+  }
+  .word-list{
+    display:flex;
+    flex-direction:column;
+    border-top:1px solid var(--rule-faint);
+  }
+  .section-empty{
+    font-size:0.85rem;
+    color:var(--muted);
+    padding:14px 6px;
+    border-bottom:1px solid var(--rule-faint);
+  }
+  .word-row{
+    display:grid;
+    grid-template-columns:minmax(120px,1fr) 2fr auto auto;
+    gap:16px;
+    align-items:center;
+    padding:14px 6px;
+    border-bottom:1px solid var(--rule-faint);
+  }
+  .word-row .w-word{
+    font-family:'Fraunces', 'Noto Sans JP', Georgia, serif;
+    font-weight:600;
+    font-size:1.08rem;
+  }
+  .word-row .w-phonetic{
+    display:block;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.72rem;
+    color:var(--muted);
+    margin-top:2px;
+  }
+  .word-row .w-meaning{
+    font-size:0.9rem;
+    color:var(--ink);
+    opacity:0.85;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+  .status-chip{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.65rem;
+    letter-spacing:0.05em;
+    text-transform:uppercase;
+    padding:5px 9px;
+    border-radius:20px;
+    white-space:nowrap;
+    background:var(--rule-faint);
+    color:var(--muted);
+    border:none;
+    cursor:pointer;
+  }
+  .status-chip.is-learned{
+    background:var(--learned-bg);
+    color:var(--learned);
+  }
+  .row-actions{
+    display:flex;
+    gap:6px;
+  }
+  .icon-btn{
+    width:30px; height:30px;
+    border-radius:6px;
+    border:1px solid var(--rule-faint);
+    background:transparent;
+    color:var(--muted);
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+  }
+  .icon-btn:hover{ color:var(--ink); border-color:var(--rule); }
+  .icon-btn.danger:hover{ color:var(--danger); border-color:var(--danger); }
+  .icon-btn svg{ width:14px; height:14px; }
+
+  @media (max-width:600px){
+    .word-row{ grid-template-columns:1fr auto; row-gap:6px; }
+    .w-meaning{ grid-column:1 / -1; white-space:normal; }
+  }
+
+  /* ---------- MODAL ---------- */
+  .modal-backdrop{
+    position:fixed; inset:0;
+    background:rgba(20,20,15,0.45);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    z-index:10;
+  }
+  .modal-card{
+    width:100%;
+    max-width:440px;
+    background:var(--card);
+    border-radius:8px;
+    box-shadow:var(--shadow);
+    padding:24px 24px 22px;
+    position:relative;
+  }
+  .modal-card::before{
+    content:"";
+    position:absolute;
+    left:20px; top:0; bottom:0;
+    width:2px;
+    background:var(--accent);
+    opacity:0.55;
+  }
+  .modal-card{ padding-left:40px; }
+  .modal-title{
+    font-family:'Fraunces', Georgia, serif;
+    font-size:1.2rem;
+    font-weight:600;
+    margin:0 0 16px;
+  }
+  .confirm-message{
+    margin:0;
+    font-size:0.92rem;
+    line-height:1.5;
+    color:var(--ink);
+  }
+  .form-field{ margin-bottom:14px; }
+  .form-field label{
+    display:block;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.68rem;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    color:var(--rule);
+    margin-bottom:5px;
+  }
+  .form-field input, .form-field textarea, .form-field select{
+    width:100%;
+    font-family:'Work Sans', 'Noto Sans JP', sans-serif;
+    font-size:0.92rem;
+    color:var(--ink);
+    background:var(--paper);
+    border:1px solid var(--rule-faint);
+    border-radius:5px;
+    padding:9px 10px;
+    resize:vertical;
+  }
+  .form-field textarea{ min-height:54px; }
+  .modal-actions{
+    display:flex;
+    justify-content:flex-end;
+    gap:10px;
+    margin-top:18px;
+  }
+  .hidden{ display:none !important; }
+</style>
+
+<div class="app">
+  <div class="masthead">
+    <div>
+      <div class="brand">Sổ Tay <em>Từ Vựng</em></div>
+      <div class="sub">anh · nhật · 15 từ mỗi ngày</div>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" id="tabTodayBtn">Bài hôm nay</button>
+    <button class="tab-btn" id="tabStudyBtn">Học từ mới</button>
+    <button class="tab-btn" id="tabReviewBtn">Từ đã học</button>
+    <button class="tab-btn" id="tabListBtn">Sổ tay từ vựng</button>
+  </div>
+
+  <div class="panel-surface" id="todayPanel">
+    <div class="today-head">
+      <div>
+        <h2 class="today-title">Bài hôm nay</h2>
+        <div class="today-date" id="todayDate">—</div>
+      </div>
+      <div class="today-progress" id="todayProgress">0 / 15</div>
+    </div>
+
+    <div id="todayEmpty" class="empty-state hidden">
+      <p>Sổ tay chưa có từ vựng nào để tạo bài hôm nay.</p>
+      <button class="btn-solid" id="todayAddBtn">+ Thêm từ đầu tiên</button>
+    </div>
+
+    <div id="todayDone" class="empty-state hidden">
+      <div class="celebrate-badge">
+        <svg viewBox="0 0 72 72" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="36" cy="38" r="17"></circle>
+          <polyline points="28 38 34 44 45 32"></polyline>
+          <line x1="36" y1="13" x2="36" y2="6"></line>
+          <line x1="53" y1="20" x2="58" y2="15"></line>
+          <line x1="19" y1="20" x2="14" y2="15"></line>
+          <line x1="61" y1="36" x2="68" y2="35"></line>
+          <line x1="11" y1="36" x2="4" y2="35"></line>
+        </svg>
+      </div>
+      <p class="all-done-title">Hoàn tất bài hôm nay</p>
+      <p class="today-done-count" id="todayDoneCount">Bạn đã học xong 15 từ.</p>
+      <p id="todayDoneNote">Danh sách mới sẽ xuất hiện vào ngày mai.</p>
+      <button class="btn-solid" id="todayMoreBtn">Học thêm từ mới</button>
+    </div>
+
+    <div class="card-wrap" id="todayContent">
+      <div class="index-card">
+        <div class="card-top">
+          <button class="done-btn" id="tDoneBtn" title="Đánh dấu đã nhớ từ này">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            Học xong
+          </button>
+          <div class="counter"><span id="tCounterLabel">01 / 01</span><span class="lang-tag" id="tLangTag">EN</span></div>
+        </div>
+
+        <div class="headword-zone" id="tHeadwordZone" title="Nhấn để xem nghĩa">
+          <h2 class="headword" id="tHeadword">word</h2>
+          <div class="phonetic-row">
+            <span class="phonetic" id="tPhonetic">/wɜːrd/</span>
+            <button class="speak-btn" id="tSpeakBtn" title="Nghe phát âm">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>
+            </button>
+          </div>
+          <div class="reveal-hint" id="tRevealHint">nhấn vào chữ để xem nghĩa &amp; ví dụ</div>
+        </div>
+
+        <div class="reveal" id="tRevealBox">
+          <div class="reveal-inner">
+            <div class="reveal-content">
+              <p class="field-label">Nghĩa</p>
+              <p class="meaning-text" id="tMeaningText">meaning</p>
+              <p class="field-label">Ví dụ</p>
+              <p class="example-text" id="tExampleText">example sentence.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-row">
+        <button class="nav-btn" id="tPrevBtn">&larr; Quay lại</button>
+        <button class="nav-btn" id="tNextBtn">Tiếp theo &rarr;</button>
+      </div>
+      <div class="kbd-hint"><kbd>&larr;</kbd> <kbd>&rarr;</kbd> chuyển từ · <kbd>Enter</kbd> xem nghĩa</div>
+      <div class="progress-line" id="tProgressLine">đã học 0 / 0 từ</div>
+    </div>
+
+    <div class="reminder-box">
+      <div class="reminder-row">
+        <label class="reminder-toggle">
+          <input type="checkbox" id="reminderToggle">
+          <span>Nhắc học hằng ngày lúc</span>
+        </label>
+        <input type="time" id="reminderTime" class="reminder-time" value="09:00">
+      </div>
+      <div class="reminder-note" id="reminderNote">Thông báo chỉ hiện khi tab này đang mở trong trình duyệt.</div>
+    </div>
+  </div>
+
+  <div class="panel-surface hidden" id="studyPanel">
+    <div id="studyEmpty" class="empty-state hidden">
+      <p>Sổ tay chưa có từ vựng nào.</p>
+      <button class="btn-solid" id="emptyAddBtn">+ Thêm từ đầu tiên</button>
+    </div>
+
+    <div id="studyAllDone" class="empty-state hidden">
+      <p class="all-done-title">Bạn đã học xong toàn bộ từ vựng.</p>
+      <p>Muốn ôn lại từ nào, mở tab Sổ tay từ vựng và chuyển nó về mục “Chưa học”.</p>
+      <button class="btn-solid" id="allDoneListBtn">Mở sổ tay từ vựng</button>
+    </div>
+
+    <div class="card-wrap" id="studyContent">
+      <div class="index-card">
+        <div class="card-top">
+          <button class="done-btn" id="doneBtn" title="Đánh dấu đã nhớ từ này">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            Học xong
+          </button>
+          <div class="counter"><span id="counterLabel">01 / 01</span><span class="lang-tag" id="langTag">EN</span></div>
+        </div>
+
+        <div class="headword-zone" id="headwordZone" title="Nhấn để xem nghĩa">
+          <h2 class="headword" id="headword">word</h2>
+          <div class="phonetic-row">
+            <span class="phonetic" id="phonetic">/wɜːrd/</span>
+            <button class="speak-btn" id="speakBtn" title="Nghe phát âm">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>
+            </button>
+          </div>
+          <div class="reveal-hint" id="revealHint">nhấn vào chữ để xem nghĩa &amp; ví dụ</div>
+        </div>
+
+        <div class="reveal" id="revealBox">
+          <div class="reveal-inner">
+            <div class="reveal-content">
+              <p class="field-label">Nghĩa</p>
+              <p class="meaning-text" id="meaningText">meaning</p>
+              <p class="field-label">Ví dụ</p>
+              <p class="example-text" id="exampleText">example sentence.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-row">
+        <button class="nav-btn" id="prevBtn">&larr; Quay lại</button>
+        <button class="nav-btn" id="nextBtn">Tiếp theo &rarr;</button>
+      </div>
+      <div class="kbd-hint"><kbd>&larr;</kbd> <kbd>&rarr;</kbd> chuyển từ · <kbd>Enter</kbd> xem nghĩa</div>
+      <div class="progress-line" id="progressLine">đã học 0 / 0 từ</div>
+    </div>
+  </div>
+
+  <div class="panel-surface hidden" id="reviewPanel">
+    <div id="reviewEmpty" class="empty-state hidden">
+      <p>Chưa có từ nào trong danh sách đã học.</p>
+      <p>Ở tab Học từ mới, bấm “Học xong” khi bạn đã nhớ một từ, từ đó sẽ nằm ở đây để ôn lại.</p>
+    </div>
+
+    <div class="card-wrap" id="reviewContent">
+      <div class="index-card">
+        <div class="card-top">
+          <button class="relearn-btn" id="relearnBtn" title="Chuyển về danh sách chưa học">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+            Học lại
+          </button>
+          <div class="counter"><span id="rCounterLabel">01 / 01</span><span class="lang-tag" id="rLangTag">EN</span></div>
+        </div>
+
+        <div class="headword-zone" id="rHeadwordZone" title="Nhấn để xem nghĩa">
+          <h2 class="headword" id="rHeadword">word</h2>
+          <div class="phonetic-row">
+            <span class="phonetic" id="rPhonetic">/wɜːrd/</span>
+            <button class="speak-btn" id="rSpeakBtn" title="Nghe phát âm">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>
+            </button>
+          </div>
+          <div class="reveal-hint" id="rRevealHint">nhấn vào chữ để xem nghĩa &amp; ví dụ</div>
+        </div>
+
+        <div class="reveal" id="rRevealBox">
+          <div class="reveal-inner">
+            <div class="reveal-content">
+              <p class="field-label">Nghĩa</p>
+              <p class="meaning-text" id="rMeaningText">meaning</p>
+              <p class="field-label">Ví dụ</p>
+              <p class="example-text" id="rExampleText">example sentence.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-row">
+        <button class="nav-btn" id="rPrevBtn">&larr; Quay lại</button>
+        <button class="nav-btn" id="rNextBtn">Tiếp theo &rarr;</button>
+      </div>
+      <div class="kbd-hint"><kbd>&larr;</kbd> <kbd>&rarr;</kbd> chuyển từ · <kbd>Enter</kbd> xem nghĩa</div>
+      <div class="progress-line" id="rProgressLine">đã học 0 / 0 từ</div>
+    </div>
+  </div>
+
+  <div class="panel-surface hidden" id="listPanel">
+    <div class="list-head">
+      <div><h2>Sổ tay từ vựng</h2><span class="list-count" id="listCount">0 từ</span></div>
+      <button class="btn-solid" id="addWordBtn">+ Thêm từ mới</button>
+    </div>
+
+    <div class="search-row">
+      <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+      <input type="text" id="searchInput" class="search-input" placeholder="Tra từ, cách đọc, nghĩa hoặc câu ví dụ…" autocomplete="off">
+      <button class="search-clear hidden" id="searchClearBtn" title="Xoá tìm kiếm">&times;</button>
+    </div>
+    <div class="search-status hidden" id="searchStatus"></div>
+
+    <div class="list-section">
+      <h3 class="section-title">Chưa học <span class="section-count" id="unlearnedCount">0</span></h3>
+      <div class="word-list" id="unlearnedList"></div>
+    </div>
+
+    <div class="list-section">
+      <h3 class="section-title section-title-done">Đã học <span class="section-count" id="learnedCount">0</span></h3>
+      <div class="word-list" id="learnedList"></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop hidden" id="modalBackdrop">
+  <div class="modal-card">
+    <h3 class="modal-title" id="modalTitle">Thêm từ mới</h3>
+    <form id="wordForm">
+      <div class="form-field">
+        <label for="fLang">Ngôn ngữ</label>
+        <select id="fLang">
+          <option value="en">Tiếng Anh</option>
+          <option value="ja">Tiếng Nhật</option>
+        </select>
+      </div>
+      <div class="form-field">
+        <label for="fWord">Từ vựng</label>
+        <input type="text" id="fWord" required>
+      </div>
+      <div class="form-field">
+        <label for="fPhonetic">Phiên âm / cách đọc (tuỳ chọn)</label>
+        <input type="text" id="fPhonetic" placeholder="/wɜːrd/ hoặc romaji">
+      </div>
+      <div class="form-field">
+        <label for="fMeaning">Nghĩa</label>
+        <textarea id="fMeaning" required></textarea>
+      </div>
+      <div class="form-field">
+        <label for="fExample">Câu ví dụ</label>
+        <textarea id="fExample"></textarea>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn-ghost" id="cancelModalBtn">Hủy</button>
+        <button type="submit" class="btn-solid">Lưu</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="modal-backdrop hidden" id="confirmBackdrop">
+  <div class="modal-card">
+    <h3 class="modal-title" id="confirmTitle">Xoá từ vựng</h3>
+    <p class="confirm-message" id="confirmMessage">Bạn có chắc muốn xoá từ này khỏi sổ tay?</p>
+    <div class="modal-actions">
+      <button type="button" class="btn-ghost" id="confirmCancelBtn">Hủy</button>
+      <button type="button" class="btn-solid" id="confirmOkBtn">Xoá</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var STORAGE_KEY = 'vocab-flashcards-v1';
+  var JP_SEED_FLAG_KEY = STORAGE_KEY + '-jp-marketing-seed-v1';
+
+  var seedWords = [
+    {word:'deadline', phonetic:'/ˈdedlaɪn/', meaning:'Hạn chót, thời hạn phải hoàn thành công việc.', example:'We need to finish the report before the deadline on Friday.', lang:'en'},
+    {word:'requirement', phonetic:'/rɪˈkwaɪərmənt/', meaning:'Yêu cầu, điều kiện cần thiết cho một công việc hay hệ thống.', example:'The client sent us a new requirement document yesterday.', lang:'en'},
+    {word:'bug', phonetic:'/bʌg/', meaning:'Lỗi trong phần mềm.', example:'The tester found a critical bug in the login feature.', lang:'en'},
+    {word:'deploy', phonetic:'/dɪˈplɔɪ/', meaning:'Triển khai, đưa hệ thống hoặc bản cập nhật vào sử dụng.', example:'We will deploy the new version to production tonight.', lang:'en'},
+    {word:'feedback', phonetic:'/ˈfiːdbæk/', meaning:'Phản hồi, góp ý về một sản phẩm hoặc công việc.', example:'Please give me your feedback on this design.', lang:'en'},
+    {word:'maintain', phonetic:'/meɪnˈteɪn/', meaning:'Bảo trì, duy trì hoạt động của hệ thống.', example:'Our team maintains the legacy system every month.', lang:'en'},
+    {word:'collaborate', phonetic:'/kəˈlæbəreɪt/', meaning:'Hợp tác, cộng tác cùng làm việc.', example:'We collaborate closely with the Japanese team on this project.', lang:'en'},
+    {word:'schedule', phonetic:'/ˈʃedjuːl/', meaning:'Lịch trình, kế hoạch thời gian.', example:"Let's schedule a meeting for next Tuesday.", lang:'en'},
+    {word:'efficient', phonetic:'/ɪˈfɪʃnt/', meaning:'Hiệu quả, có năng suất cao.', example:'This new process is much more efficient than the old one.', lang:'en'},
+    {word:'negotiate', phonetic:'/nɪˈɡəʊʃieɪt/', meaning:'Đàm phán, thương lượng.', example:'We need to negotiate the contract terms with the vendor.', lang:'en'}
+  ];
+
+  var jpSeedWords = [
+    {word:'広告主', phonetic:'こうこくぬし・koukokunushi', meaning:'Nhà quảng cáo (bên bỏ tiền chạy quảng cáo, thường là khách hàng của mình).', example:'広告主は来月から新しいキャンペーンを開始する予定です。', lang:'ja'},
+    {word:'出稿', phonetic:'しゅっこう・shukkou', meaning:'Đăng/chạy quảng cáo lên nền tảng (submit ad for placement).', example:'来週からMeta広告の出稿を開始します。', lang:'ja'},
+    {word:'配信', phonetic:'はいしん・haishin', meaning:'Phân phối quảng cáo, việc quảng cáo được hiển thị tới người dùng.', example:'この広告は20時から22時の間に配信されています。', lang:'ja'},
+    {word:'インプレッション', phonetic:'impuresshon', meaning:'Impression, số lượt quảng cáo được hiển thị.', example:'今月のインプレッション数は先月より20%増加しました。', lang:'ja'},
+    {word:'クリック率', phonetic:'くりっくりつ・kurikku-ritsu', meaning:'CTR, tỷ lệ click trên tổng số lượt hiển thị.', example:'バナーのクリック率が低いのでデザインを見直しましょう。', lang:'ja'},
+    {word:'コンバージョン', phonetic:'konbaajon', meaning:'Conversion, hành động chuyển đổi (mua hàng, đăng ký...).', example:'コンバージョン単価を下げるために予算配分を調整します。', lang:'ja'},
+    {word:'予算消化', phonetic:'よさんしょうか・yosan shouka', meaning:'Việc tiêu (giải ngân) ngân sách quảng cáo theo kế hoạch.', example:'月末までに予算消化率を100%にする必要があります。', lang:'ja'},
+    {word:'ターゲティング', phonetic:'taagetingu', meaning:'Targeting, việc nhắm mục tiêu đối tượng quảng cáo.', example:'年齢と地域でターゲティングを絞り込みましょう。', lang:'ja'},
+    {word:'リーチ', phonetic:'riichi', meaning:'Reach, phạm vi/số người tiếp cận được quảng cáo.', example:'今回のキャンペーンでリーチを最大化したいです。', lang:'ja'},
+    {word:'入稿', phonetic:'にゅうこう・nyuukou', meaning:'Nộp/gửi vật liệu quảng cáo (banner, video...) để đăng.', example:'バナー素材は明日中にご入稿ください。', lang:'ja'},
+    {word:'クリエイティブ', phonetic:'kurieitibu', meaning:'Creative, hình ảnh/video dùng để chạy quảng cáo.', example:'新しいクリエイティブのA/Bテストを行います。', lang:'ja'},
+    {word:'運用型広告', phonetic:'うんようがたこうこく・unyougata koukoku', meaning:'Quảng cáo dạng vận hành (loại quảng cáo tự đấu thầu như Meta, X Ads).', example:'運用型広告のレポートは週次で共有します。', lang:'ja'},
+    {word:'仕様書', phonetic:'しようしょ・shiyousho', meaning:'Tài liệu đặc tả yêu cầu/chức năng (spec).', example:'仕様書のご確認をお願いいたします。', lang:'ja'},
+    {word:'見積もり', phonetic:'みつもり・mitsumori', meaning:'Báo giá, bản ước tính chi phí.', example:'追加開発の見積もりを今週中にお送りします。', lang:'ja'},
+    {word:'納期', phonetic:'のうき・nouki', meaning:'Thời hạn giao hàng/bàn giao sản phẩm.', example:'納期に間に合うよう進捗を管理しています。', lang:'ja'},
+    {word:'不具合', phonetic:'ふぐあい・fuguai', meaning:'Lỗi, sự cố kỹ thuật (cách nói lịch sự hơn "バグ" khi trao đổi với khách).', example:'本番環境で不具合が発生しました。', lang:'ja'},
+    {word:'打ち合わせ', phonetic:'うちあわせ・uchiawase', meaning:'Buổi họp trao đổi công việc.', example:'来週火曜日に打ち合わせを設定させてください。', lang:'ja'},
+    {word:'承認', phonetic:'しょうにん・shounin', meaning:'Phê duyệt.', example:'デザイン案の承認をいただけますでしょうか。', lang:'ja'},
+    {word:'進捗', phonetic:'しんちょく・shinchoku', meaning:'Tiến độ công việc.', example:'現在の進捗状況を共有させていただきます。', lang:'ja'},
+    {word:'手戻り', phonetic:'てもどり・temodori', meaning:'Việc phải làm lại do lỗi hoặc thay đổi yêu cầu.', example:'仕様変更により手戻りが発生しました。', lang:'ja'}
+  ];
+
+  var JP_SEED_FLAG_KEY_V2 = STORAGE_KEY + '-jp-marketing-seed-v2';
+  var jpSeedWordsV2 = [
+    {word:'リスティング広告', phonetic:'risutingu koukoku', meaning:'Quảng cáo tìm kiếm dạng văn bản, hiển thị trên kết quả tìm kiếm (Google, Yahoo...).', example:'リスティング広告のキーワードを見直しましょう。', lang:'ja'},
+    {word:'ディスプレイ広告', phonetic:'disupurei koukoku', meaning:'Quảng cáo hiển thị dạng banner trên các website liên kết.', example:'ディスプレイ広告のクリエイティブを3パターン用意しました。', lang:'ja'},
+    {word:'動画広告', phonetic:'どうがこうこく・douga koukoku', meaning:'Quảng cáo dạng video.', example:'YouTubeで動画広告を配信します。', lang:'ja'},
+    {word:'ネイティブ広告', phonetic:'neitibu koukoku', meaning:'Quảng cáo tự nhiên, hoà vào nội dung trang để không gây khó chịu cho người xem.', example:'ネイティブ広告はユーザーに広告と気づかれにくいです。', lang:'ja'},
+    {word:'アフィリエイト広告', phonetic:'afirieito koukoku', meaning:'Quảng cáo liên kết, trả hoa hồng theo kết quả (affiliate).', example:'アフィリエイト広告の成果報酬を確認してください。', lang:'ja'},
+    {word:'リマーケティング', phonetic:'rimaaketingu', meaning:'Remarketing, quảng cáo nhắm lại người từng truy cập website.', example:'サイト訪問者にリマーケティング広告を配信します。', lang:'ja'},
+    {word:'リターゲティング', phonetic:'ritaagetingu', meaning:'Retargeting, tương tự remarketing, thường dùng cho quảng cáo mạng xã hội.', example:'カート離脱ユーザーにリターゲティングをかけましょう。', lang:'ja'},
+    {word:'ルックアライク配信', phonetic:'るっくあらいくはいしん・rukkuraiku haishin', meaning:'Lookalike targeting, nhắm tới nhóm người dùng tương tự khách hàng hiện có.', example:'優良顧客のルックアライク配信を試してみます。', lang:'ja'},
+    {word:'オーディエンス', phonetic:'oodiensu', meaning:'Audience, nhóm đối tượng mục tiêu của quảng cáo.', example:'新しいオーディエンスを作成して配信します。', lang:'ja'},
+    {word:'セグメント', phonetic:'segumento', meaning:'Segment, phân khúc người dùng.', example:'年齢層でユーザーをセグメント分けします。', lang:'ja'},
+    {word:'ランディングページ', phonetic:'randingu peeji', meaning:'Landing page (LP), trang đích khi người dùng click vào quảng cáo.', example:'ランディングページのコンバージョン率を改善したいです。', lang:'ja'},
+    {word:'CVR', phonetic:'シーブイアール', meaning:'Conversion Rate - tỷ lệ chuyển đổi trên tổng lượt truy cập.', example:'LPのCVRが先月より低下しています。', lang:'ja'},
+    {word:'CPA', phonetic:'シーピーエー', meaning:'Cost Per Acquisition - chi phí trung bình trên mỗi lượt chuyển đổi.', example:'目標CPAを3000円に設定しています。', lang:'ja'},
+    {word:'CPC', phonetic:'シーピーシー', meaning:'Cost Per Click - chi phí trung bình trên mỗi lượt click.', example:'このキーワードはCPCが高いです。', lang:'ja'},
+    {word:'CPM', phonetic:'シーピーエム', meaning:'Cost Per Mille - chi phí trên mỗi 1000 lượt hiển thị.', example:'CPMベースで配信するプランを提案します。', lang:'ja'},
+    {word:'ROAS', phonetic:'ロアス', meaning:'Return On Ad Spend - tỷ suất doanh thu trên chi phí quảng cáo.', example:'ROASが200%を超えるように運用しています。', lang:'ja'},
+    {word:'ROI', phonetic:'アールオーアイ', meaning:'Return On Investment - tỷ suất lợi nhuận trên vốn đầu tư.', example:'このキャンペーンのROIを算出してください。', lang:'ja'},
+    {word:'KPI', phonetic:'ケーピーアイ', meaning:'Key Performance Indicator - chỉ số đánh giá hiệu quả then chốt.', example:'今期のKPIを達成できるよう進めます。', lang:'ja'},
+    {word:'広告費', phonetic:'こうこくひ・koukokuhi', meaning:'Chi phí quảng cáo.', example:'今月の広告費は予算内に収まっています。', lang:'ja'},
+    {word:'広告代理店', phonetic:'こうこくだいりてん・koukoku dairiten', meaning:'Công ty đại lý quảng cáo (agency).', example:'広告代理店経由で媒体に出稿しています。', lang:'ja'},
+    {word:'媒体社', phonetic:'ばいたいしゃ・baitaisha', meaning:'Bên sở hữu nền tảng quảng cáo (Meta, Google, X...).', example:'媒体社の審査に通過しました。', lang:'ja'},
+    {word:'ピクセル設定', phonetic:'ぴくせるせってい・pikuseru settei', meaning:'Cài đặt pixel theo dõi hành vi người dùng trên website.', example:'Metaピクセルの設定が正しいか確認してください。', lang:'ja'},
+    {word:'コンバージョンタグ', phonetic:'konbaajon tagu', meaning:'Tag/đoạn mã theo dõi chuyển đổi.', example:'コンバージョンタグが発火しているか確認します。', lang:'ja'},
+    {word:'トラッキング', phonetic:'torakkingu', meaning:'Việc theo dõi hành vi, hiệu quả quảng cáo.', example:'広告のトラッキング設定に問題があります。', lang:'ja'},
+    {word:'アトリビューション', phonetic:'atoribyuushon', meaning:'Attribution, phân tích đóng góp của từng kênh vào chuyển đổi.', example:'アトリビューション分析でどの広告が貢献したか確認します。', lang:'ja'},
+    {word:'フリークエンシー', phonetic:'furiikuenshii', meaning:'Frequency, số lần trung bình một người nhìn thấy quảng cáo.', example:'フリークエンシーが高すぎるので配信を調整します。', lang:'ja'},
+    {word:'入札戦略', phonetic:'にゅうさつせんりゃく・nyuusatsu senryaku', meaning:'Chiến lược đấu thầu giá quảng cáo.', example:'自動入札戦略に切り替えることを提案します。', lang:'ja'},
+    {word:'自動入札', phonetic:'じどうにゅうさつ・jidou nyuusatsu', meaning:'Đấu thầu tự động.', example:'自動入札で運用コストを削減しています。', lang:'ja'},
+    {word:'手動入札', phonetic:'しゅどうにゅうさつ・shudou nyuusatsu', meaning:'Đấu thầu thủ công.', example:'手動入札で細かく単価を調整します。', lang:'ja'},
+    {word:'日予算', phonetic:'にちよさん・nichi yosan', meaning:'Ngân sách chạy quảng cáo mỗi ngày.', example:'日予算を5000円に設定しました。', lang:'ja'},
+    {word:'SNS運用', phonetic:'えすえぬえすうんよう・SNS unyou', meaning:'Vận hành, quản lý các kênh mạng xã hội.', example:'SNS運用の月次レポートを作成します。', lang:'ja'},
+    {word:'インフルエンサーマーケティング', phonetic:'infuruensaa maaketingu', meaning:'Marketing thông qua người có ảnh hưởng.', example:'インフルエンサーマーケティングで認知拡大を図ります。', lang:'ja'},
+    {word:'UGC', phonetic:'ユーザーせいせいコンテンツ・yuuzaa seisei kontentsu', meaning:'User Generated Content - nội dung do người dùng tạo ra.', example:'UGCを活用した広告クリエイティブを制作します。', lang:'ja'},
+    {word:'ブランドリフト', phonetic:'burando rifuto', meaning:'Mức tăng nhận diện/ấn tượng thương hiệu sau chiến dịch.', example:'ブランドリフト調査で認知度の変化を測定します。', lang:'ja'},
+    {word:'カルーセル広告', phonetic:'karuuseru koukoku', meaning:'Quảng cáo dạng carousel, nhiều ảnh/video trượt ngang.', example:'カルーセル広告で複数の商品を紹介します。', lang:'ja'},
+    {word:'ストーリーズ広告', phonetic:'sutoriizu koukoku', meaning:'Quảng cáo hiển thị dạng Story (dọc, toàn màn hình).', example:'ストーリーズ広告は縦型動画が効果的です。', lang:'ja'},
+    {word:'インフィード広告', phonetic:'infiido koukoku', meaning:'Quảng cáo xuất hiện xen kẽ trong newsfeed.', example:'インフィード広告のクリエイティブを差し替えます。', lang:'ja'},
+    {word:'バナーサイズ', phonetic:'banaa saizu', meaning:'Kích thước quy định của banner quảng cáo.', example:'媒体ごとに指定のバナーサイズを確認してください。', lang:'ja'},
+    {word:'クリエイティブ差し替え', phonetic:'くりえいてぃぶさしかえ・kurieitibu sashikae', meaning:'Việc thay thế mẫu quảng cáo (creative) mới.', example:'反応が悪いのでクリエイティブ差し替えを行います。', lang:'ja'},
+    {word:'効果測定', phonetic:'こうかそくてい・kouka sokutei', meaning:'Đo lường hiệu quả chiến dịch.', example:'キャンペーン終了後に効果測定を実施します。', lang:'ja'},
+    {word:'レポーティング', phonetic:'repootingu', meaning:'Việc lập báo cáo định kỳ.', example:'週次でレポーティングを行っています。', lang:'ja'},
+    {word:'ダッシュボード', phonetic:'dasshubōdo', meaning:'Bảng điều khiển hiển thị số liệu tổng quan.', example:'ダッシュボードでリアルタイムに数値を確認できます。', lang:'ja'},
+    {word:'週次レポート', phonetic:'しゅうじレポート・shuuji repooto', meaning:'Báo cáo hàng tuần.', example:'週次レポートを毎週月曜日に送付します。', lang:'ja'},
+    {word:'月次レポート', phonetic:'げつじレポート・getsuji repooto', meaning:'Báo cáo hàng tháng.', example:'月次レポートで全体のパフォーマンスをまとめます。', lang:'ja'},
+    {word:'媒体費', phonetic:'ばいたいひ・baitaihi', meaning:'Chi phí trả trực tiếp cho nền tảng quảng cáo.', example:'媒体費と運用手数料を分けて計上します。', lang:'ja'},
+    {word:'運用手数料', phonetic:'うんようてすうりょう・unyou tesuuryou', meaning:'Phí vận hành trả cho agency.', example:'運用手数料は広告費の20%です。', lang:'ja'},
+    {word:'アカウント開設', phonetic:'あかうんとかいせつ・akaunto kaisetsu', meaning:'Việc mở tài khoản quảng cáo mới.', example:'新しい広告アカウント開設に数日かかります。', lang:'ja'},
+    {word:'アカウント停止', phonetic:'あかうんとていし・akaunto teishi', meaning:'Tài khoản quảng cáo bị tạm ngưng/khoá.', example:'ポリシー違反でアカウント停止になりました。', lang:'ja'},
+    {word:'審査', phonetic:'しんさ・shinsa', meaning:'Việc kiểm duyệt nội dung quảng cáo trước khi chạy.', example:'クリエイティブが審査に落ちました。', lang:'ja'},
+    {word:'ポリシー違反', phonetic:'ぽりしーいはん・porishii ihan', meaning:'Vi phạm chính sách quảng cáo của nền tảng.', example:'ポリシー違反の内容を確認して修正します。', lang:'ja'},
+    {word:'要件定義', phonetic:'ようけんていぎ・youken teigi', meaning:'Giai đoạn định nghĩa yêu cầu của dự án.', example:'要件定義フェーズは来週から開始します。', lang:'ja'},
+    {word:'概算見積もり', phonetic:'がいさんみつもり・gaisan mitsumori', meaning:'Báo giá sơ bộ, ước tính ban đầu.', example:'まずは概算見積もりをお出しします。', lang:'ja'},
+    {word:'契約書', phonetic:'けいやくしょ・keiyakusho', meaning:'Hợp đồng.', example:'契約書にサインをいただけますでしょうか。', lang:'ja'},
+    {word:'発注', phonetic:'はっちゅう・hacchuu', meaning:'Việc đặt hàng/ra đơn hàng (từ phía khách).', example:'追加開発の発注をいただきました。', lang:'ja'},
+    {word:'受注', phonetic:'じゅちゅう・juchuu', meaning:'Việc nhận đơn hàng (từ phía nhà cung cấp).', example:'今回のプロジェクトを受注できました。', lang:'ja'},
+    {word:'検収', phonetic:'けんしゅう・kenshuu', meaning:'Việc nghiệm thu sản phẩm/hạng mục bàn giao.', example:'納品物の検収をお願いいたします。', lang:'ja'},
+    {word:'納品', phonetic:'のうひん・nouhin', meaning:'Việc bàn giao sản phẩm cho khách hàng.', example:'予定通り金曜日に納品します。', lang:'ja'},
+    {word:'請求書', phonetic:'せいきゅうしょ・seikyuusho', meaning:'Hoá đơn yêu cầu thanh toán.', example:'今月分の請求書を送付いたします。', lang:'ja'},
+    {word:'支払い条件', phonetic:'しはらいじょうけん・shiharai jouken', meaning:'Điều kiện/kỳ hạn thanh toán.', example:'支払い条件は月末締め翌月末払いです。', lang:'ja'},
+    {word:'キックオフ', phonetic:'kikkuofu', meaning:'Buổi họp khởi động dự án.', example:'来週プロジェクトのキックオフを行います。', lang:'ja'},
+    {word:'本番環境', phonetic:'ほんばんかんきょう・honban kankyou', meaning:'Môi trường thực tế đang vận hành (production).', example:'本番環境へのリリースは深夜に行います。', lang:'ja'},
+    {word:'検証環境', phonetic:'けんしょうかんきょう・kenshou kankyou', meaning:'Môi trường dùng để kiểm tra, xác minh trước khi lên production.', example:'検証環境で先に動作確認をお願いします。', lang:'ja'},
+    {word:'ステージング環境', phonetic:'すてーじんぐかんきょう・suteejingu kankyou', meaning:'Môi trường staging, mô phỏng gần giống production.', example:'ステージング環境にデプロイしました。', lang:'ja'},
+    {word:'単体テスト', phonetic:'たんたいテスト・tantai tesuto', meaning:'Kiểm thử đơn vị (unit test).', example:'単体テストのカバレッジを80%以上にします。', lang:'ja'},
+    {word:'結合テスト', phonetic:'けつごうテスト・ketsugou tesuto', meaning:'Kiểm thử tích hợp (integration test).', example:'結合テストで外部APIとの連携を確認します。', lang:'ja'},
+    {word:'総合テスト', phonetic:'そうごうテスト・sougou tesuto', meaning:'Kiểm thử tổng hợp toàn hệ thống.', example:'総合テストは来週から開始予定です。', lang:'ja'},
+    {word:'リグレッションテスト', phonetic:'rigureeshon tesuto', meaning:'Kiểm thử hồi quy, đảm bảo thay đổi mới không gây lỗi cũ.', example:'リリース前にリグレッションテストを実施します。', lang:'ja'},
+    {word:'品質保証', phonetic:'ひんしつほしょう・hinshitsu hoshou', meaning:'Đảm bảo chất lượng (QA).', example:'品質保証チームが最終チェックを行います。', lang:'ja'},
+    {word:'障害対応', phonetic:'しょうがいたいおう・shougai taiou', meaning:'Việc xử lý sự cố phát sinh.', example:'本番障害対応の手順を確認しておきましょう。', lang:'ja'},
+    {word:'エスカレーション', phonetic:'esukareeshon', meaning:'Việc báo cáo vấn đề lên cấp cao hơn để xử lý.', example:'重大な問題は速やかにエスカレーションしてください。', lang:'ja'},
+    {word:'優先度', phonetic:'ゆうせんど・yuusendo', meaning:'Mức độ ưu tiên của công việc.', example:'このタスクの優先度を上げてください。', lang:'ja'},
+    {word:'工数', phonetic:'こうすう・kousuu', meaning:'Khối lượng công sức cần để hoàn thành công việc.', example:'この機能の工数を見積もってください。', lang:'ja'},
+    {word:'人月', phonetic:'にんげつ・ningetsu', meaning:'Đơn vị công sức: một người làm việc trong một tháng.', example:'このプロジェクトは3人月の工数が必要です。', lang:'ja'},
+    {word:'アサイン', phonetic:'asain', meaning:'Việc phân công nhân sự vào công việc.', example:'新しいメンバーをこのタスクにアサインします。', lang:'ja'},
+    {word:'稼働率', phonetic:'かどうりつ・kadouritsu', meaning:'Tỷ lệ sử dụng/phân bổ nguồn lực nhân sự.', example:'来月のメンバーの稼働率を確認してください。', lang:'ja'},
+    {word:'リソース', phonetic:'risoosu', meaning:'Nguồn lực (thường chỉ nhân sự).', example:'リソースが不足しているので増員を検討します。', lang:'ja'},
+    {word:'スケジュール調整', phonetic:'すけじゅーるちょうせい・sukejuuru chousei', meaning:'Việc điều chỉnh lịch trình.', example:'打ち合わせのスケジュール調整をお願いします。', lang:'ja'},
+    {word:'議事録', phonetic:'ぎじろく・gijiroku', meaning:'Biên bản cuộc họp.', example:'打ち合わせ後に議事録を共有します。', lang:'ja'},
+    {word:'提案書', phonetic:'ていあんしょ・teiansho', meaning:'Tài liệu đề xuất (proposal).', example:'来週までに提案書を作成いたします。', lang:'ja'},
+    {word:'差し戻し', phonetic:'さしもどし・sashimodoshi', meaning:'Việc trả lại yêu cầu chỉnh sửa (bị từ chối/reject).', example:'レビューで差し戻しがありました。', lang:'ja'},
+    {word:'完了報告', phonetic:'かんりょうほうこく・kanryou houkoku', meaning:'Báo cáo hoàn thành công việc.', example:'タスク完了後は完了報告をお願いします。', lang:'ja'},
+    {word:'契約更新', phonetic:'けいやくこうしん・keiyaku koushin', meaning:'Việc gia hạn hợp đồng.', example:'来月契約更新の時期です。', lang:'ja'},
+    {word:'稟議', phonetic:'りんぎ・ringi', meaning:'Quy trình phê duyệt nội bộ, thường thấy trong công ty Nhật.', example:'稟議が通り次第、正式に発注いたします。', lang:'ja'},
+    {word:'先方', phonetic:'せんぽう・senpou', meaning:'Cách nói lịch sự chỉ phía đối tác/khách hàng.', example:'先方の意向を確認してから進めます。', lang:'ja'},
+    {word:'弊社', phonetic:'へいしゃ・heisha', meaning:'Cách nói khiêm tốn khi nhắc đến công ty của mình.', example:'弊社の担当者からご連絡いたします。', lang:'ja'},
+    {word:'ご確認のほどよろしくお願いいたします', phonetic:'go kakunin no hodo yoroshiku onegai itashimasu', meaning:'Câu lịch sự dùng khi nhờ đối phương xác nhận điều gì đó.', example:'資料をお送りしますので、ご確認のほどよろしくお願いいたします。', lang:'ja'},
+    {word:'承知いたしました', phonetic:'しょうちいたしました・shouchi itashimashita', meaning:'"Tôi đã hiểu/tôi xin tuân theo" - cách trả lời lịch sự khi đồng ý.', example:'承知いたしました。すぐに対応いたします。', lang:'ja'},
+    {word:'かしこまりました', phonetic:'kashikomarimashita', meaning:'"Vâng, tôi đã rõ" - mức độ lịch sự rất cao, thường dùng với khách hàng.', example:'かしこまりました。明日までにご用意いたします。', lang:'ja'},
+    {word:'お手数をおかけしますが', phonetic:'おてすうをおかけしますが・otesuu wo okake shimasu ga', meaning:'"Xin lỗi vì đã làm phiền, nhưng..." - mở đầu câu nhờ vả lịch sự.', example:'お手数をおかけしますが、ご確認をお願いいたします。', lang:'ja'},
+    {word:'ご対応いただけますと幸いです', phonetic:'go taiou itadakemasu to saiwai desu', meaning:'"Rất mong nhận được sự xử lý/hỗ trợ từ quý vị."', example:'期日までにご対応いただけますと幸いです。', lang:'ja'},
+    {word:'大変申し訳ございません', phonetic:'たいへんもうしわけございません・taihen moushiwake gozaimasen', meaning:'"Tôi thực sự vô cùng xin lỗi" - mức xin lỗi trang trọng nhất.', example:'ご迷惑をおかけし、大変申し訳ございません。', lang:'ja'},
+    {word:'ご認識の相違', phonetic:'ごにんしきのそうい・go ninshiki no soui', meaning:'Sự khác biệt trong cách hiểu/nhận thức giữa hai bên.', example:'ご認識の相違がないか確認させてください。', lang:'ja'},
+    {word:'齟齬', phonetic:'そご・sogo', meaning:'Sự sai lệch, không khớp giữa yêu cầu và kết quả thực tế.', example:'仕様に齟齬がないよう再確認します。', lang:'ja'},
+    {word:'折り返しご連絡いたします', phonetic:'おりかえしごれんらくいたします・orikaeshi go renraku itashimasu', meaning:'"Tôi sẽ liên hệ lại sau" - dùng khi chưa trả lời ngay được.', example:'確認の上、折り返しご連絡いたします。', lang:'ja'},
+    {word:'ご都合はいかがでしょうか', phonetic:'ごつごうはいかがでしょうか・go tsugou wa ikaga deshou ka', meaning:'"Quý vị có thuận tiện vào lúc đó không ạ?" - dùng khi hẹn lịch.', example:'来週火曜日のご都合はいかがでしょうか。', lang:'ja'},
+    {word:'恐れ入りますが', phonetic:'おそれいりますが・osoreirimasu ga', meaning:'"Xin thất lễ/làm phiền, nhưng..." - mở đầu yêu cầu rất lịch sự.', example:'恐れ入りますが、資料をご共有いただけますか。', lang:'ja'},
+    {word:'ご不明点がございましたら', phonetic:'ごふめいてんがございましたら・go fumeiten ga gozaimashitara', meaning:'"Nếu có điểm nào chưa rõ thì..." - dùng cuối email/tài liệu.', example:'ご不明点がございましたらお気軽にお問い合わせください。', lang:'ja'},
+    {word:'差し支えなければ', phonetic:'さしつかえなければ・sashitsukae nakereba', meaning:'"Nếu không có gì bất tiện thì..." - cách hỏi ý kiến lịch sự.', example:'差し支えなければ、電話でご説明させてください。', lang:'ja'},
+    {word:'引き続きよろしくお願いいたします', phonetic:'ひきつづきよろしくおねがいいたします・hikitsuzuki yoroshiku onegai itashimasu', meaning:'"Mong tiếp tục nhận được sự hợp tác/hỗ trợ."', example:'今後とも引き続きよろしくお願いいたします。', lang:'ja'},
+    {word:'ご一報ください', phonetic:'ごいっぽうください・go ippou kudasai', meaning:'"Xin hãy báo cho tôi biết" khi có thay đổi/vấn đề.', example:'変更がございましたら、ご一報ください。', lang:'ja'},
+    {word:'リリースノート', phonetic:'ririisu nooto', meaning:'Tài liệu ghi chú thay đổi khi phát hành phiên bản mới.', example:'リリースノートを更新しました。', lang:'ja'},
+    {word:'バージョン管理', phonetic:'ばーじょんかんり・baajon kanri', meaning:'Quản lý phiên bản mã nguồn.', example:'Gitでバージョン管理を行っています。', lang:'ja'},
+    {word:'リポジトリ', phonetic:'ripojitori', meaning:'Kho lưu trữ mã nguồn (repository).', example:'新しいリポジトリを作成しました。', lang:'ja'},
+    {word:'ブランチ', phonetic:'buranchi', meaning:'Nhánh mã nguồn (branch).', example:'機能ごとにブランチを分けて開発します。', lang:'ja'},
+    {word:'マージ', phonetic:'maaji', meaning:'Việc gộp nhánh mã nguồn (merge).', example:'レビュー完了後にマージします。', lang:'ja'},
+    {word:'プルリクエスト', phonetic:'puru rikuesuto', meaning:'Yêu cầu gộp mã nguồn để review (pull request).', example:'プルリクエストを確認していただけますか。', lang:'ja'},
+    {word:'デバッグ', phonetic:'debaggu', meaning:'Việc tìm và sửa lỗi trong code.', example:'エラーの原因をデバッグしています。', lang:'ja'},
+    {word:'ログ', phonetic:'rogu', meaning:'Nhật ký hoạt động của hệ thống (log).', example:'サーバーのログを確認してください。', lang:'ja'},
+    {word:'API連携', phonetic:'えーぴーあいれんけい・API renkei', meaning:'Việc tích hợp/kết nối qua API với hệ thống khác.', example:'外部システムとのAPI連携をテストします。', lang:'ja'},
+    {word:'データベース設計', phonetic:'でーたべーすせっけい・deetabeesu sekkei', meaning:'Thiết kế cấu trúc cơ sở dữ liệu.', example:'データベース設計のレビューをお願いします。', lang:'ja'},
+    {word:'脆弱性', phonetic:'ぜいじゃくせい・zeijakusei', meaning:'Lỗ hổng bảo mật của hệ thống.', example:'セキュリティ診断で脆弱性が見つかりました。', lang:'ja'},
+    {word:'負荷テスト', phonetic:'ふかテスト・fuka tesuto', meaning:'Kiểm thử hiệu năng dưới tải cao (load test).', example:'リリース前に負荷テストを実施します。', lang:'ja'},
+    {word:'保守運用', phonetic:'ほしゅうんよう・hoshu unyou', meaning:'Việc bảo trì và vận hành hệ thống sau khi bàn giao.', example:'リリース後の保守運用を継続します。', lang:'ja'},
+    {word:'マニュアル', phonetic:'manyuaru', meaning:'Tài liệu hướng dẫn sử dụng.', example:'操作マニュアルを作成しています。', lang:'ja'},
+    {word:'スプリント', phonetic:'supurinto', meaning:'Một chu kỳ làm việc ngắn trong mô hình Agile/Scrum.', example:'次のスプリントで対応いたします。', lang:'ja'},
+    {word:'バックログ', phonetic:'bakkurogu', meaning:'Danh sách các hạng mục công việc cần làm (backlog).', example:'バックログに新しいタスクを追加しました。', lang:'ja'},
+    {word:'スクラム', phonetic:'sukuramu', meaning:'Một phương pháp làm việc theo Agile (Scrum).', example:'毎朝スクラムミーティングを行っています。', lang:'ja'},
+    {word:'デイリーミーティング', phonetic:'deirii miitingu', meaning:'Buổi họp ngắn hàng ngày để cập nhật tiến độ.', example:'デイリーミーティングで進捗を共有します。', lang:'ja'},
+    {word:'レビュー会', phonetic:'れびゅーかい・rebyuu kai', meaning:'Buổi họp để review, đánh giá kết quả công việc.', example:'明日の午後にレビュー会を設定しました。', lang:'ja'},
+    {word:'ふりかえり', phonetic:'furikaeri', meaning:'Buổi nhìn lại, rút kinh nghiệm sau một giai đoạn làm việc (retrospective).', example:'スプリント終了後にふりかえりを行います。', lang:'ja'}
+  ];
+
+  function uid(){ return 'w' + Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
+
+  function load(){
+    var list = null;
+    try{
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if(raw){ list = JSON.parse(raw); }
+    }catch(e){}
+
+    if(!list){
+      list = seedWords.map(function(w){
+        return Object.assign({id:uid(), learned:false}, w);
+      });
+    }
+
+    var jpAlreadySeeded = false;
+    try{ jpAlreadySeeded = !!localStorage.getItem(JP_SEED_FLAG_KEY); }catch(e){}
+    if(!jpAlreadySeeded){
+      jpSeedWords.forEach(function(w){
+        list.push(Object.assign({id:uid(), learned:false}, w));
+      });
+      try{ localStorage.setItem(JP_SEED_FLAG_KEY, '1'); }catch(e){}
+    }
+
+    var jpAlreadySeededV2 = false;
+    try{ jpAlreadySeededV2 = !!localStorage.getItem(JP_SEED_FLAG_KEY_V2); }catch(e){}
+    if(!jpAlreadySeededV2){
+      jpSeedWordsV2.forEach(function(w){
+        list.push(Object.assign({id:uid(), learned:false}, w));
+      });
+      try{ localStorage.setItem(JP_SEED_FLAG_KEY_V2, '1'); }catch(e){}
+    }
+
+    save(list);
+    return list;
+  }
+  function save(list){
+    try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(list)); }catch(e){}
+  }
+
+  var words = load();
+  var searchQuery = '';
+  var editingId = null;
+
+  var el = {
+    tabTodayBtn: document.getElementById('tabTodayBtn'),
+    todayPanel: document.getElementById('todayPanel'),
+    todayDate: document.getElementById('todayDate'),
+    todayProgress: document.getElementById('todayProgress'),
+    todayAddBtn: document.getElementById('todayAddBtn'),
+    todayMoreBtn: document.getElementById('todayMoreBtn'),
+    todayDoneNote: document.getElementById('todayDoneNote'),
+    todayDoneCount: document.getElementById('todayDoneCount'),
+    reminderToggle: document.getElementById('reminderToggle'),
+    reminderTime: document.getElementById('reminderTime'),
+    reminderNote: document.getElementById('reminderNote'),
+    tabStudyBtn: document.getElementById('tabStudyBtn'),
+    tabReviewBtn: document.getElementById('tabReviewBtn'),
+    tabListBtn: document.getElementById('tabListBtn'),
+    studyPanel: document.getElementById('studyPanel'),
+    reviewPanel: document.getElementById('reviewPanel'),
+    listPanel: document.getElementById('listPanel'),
+    allDoneListBtn: document.getElementById('allDoneListBtn'),
+    emptyAddBtn: document.getElementById('emptyAddBtn'),
+    searchInput: document.getElementById('searchInput'),
+    searchClearBtn: document.getElementById('searchClearBtn'),
+    searchStatus: document.getElementById('searchStatus'),
+    listCount: document.getElementById('listCount'),
+    unlearnedList: document.getElementById('unlearnedList'),
+    learnedList: document.getElementById('learnedList'),
+    unlearnedCount: document.getElementById('unlearnedCount'),
+    learnedCount: document.getElementById('learnedCount'),
+    addWordBtn: document.getElementById('addWordBtn'),
+    modalBackdrop: document.getElementById('modalBackdrop'),
+    modalTitle: document.getElementById('modalTitle'),
+    wordForm: document.getElementById('wordForm'),
+    fWord: document.getElementById('fWord'),
+    fLang: document.getElementById('fLang'),
+    fPhonetic: document.getElementById('fPhonetic'),
+    fMeaning: document.getElementById('fMeaning'),
+    fExample: document.getElementById('fExample'),
+    cancelModalBtn: document.getElementById('cancelModalBtn'),
+    confirmBackdrop: document.getElementById('confirmBackdrop'),
+    confirmMessage: document.getElementById('confirmMessage'),
+    confirmCancelBtn: document.getElementById('confirmCancelBtn'),
+    confirmOkBtn: document.getElementById('confirmOkBtn')
+  };
+
+  function pad(n){ return n < 10 ? '0'+n : ''+n; }
+  function byId(id){ return document.getElementById(id); }
+
+  function unlearnedWords(){
+    return words.filter(function(w){ return !w.learned; });
+  }
+  function learnedWords(){
+    return words.filter(function(w){ return w.learned; });
+  }
+
+  /* ---------- bài hôm nay ---------- */
+  var DAILY_KEY = STORAGE_KEY + '-daily-v1';
+  var DAILY_SIZE = 15;
+
+  function todayKey(){
+    var d = new Date();
+    return d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate());
+  }
+
+  function seededOrder(list, seedText){
+    var seed = 0;
+    for(var i = 0; i < seedText.length; i++){
+      seed = (seed * 31 + seedText.charCodeAt(i)) >>> 0;
+    }
+    return list
+      .map(function(w, i){
+        seed = (seed * 1664525 + 1013904223 + i) >>> 0;
+        return { w: w, r: seed };
+      })
+      .sort(function(a, b){ return a.r - b.r; })
+      .map(function(x){ return x.w; });
+  }
+
+  function readDaily(){
+    try{
+      var raw = localStorage.getItem(DAILY_KEY);
+      if(raw) return JSON.parse(raw);
+    }catch(e){}
+    return null;
+  }
+  function writeDaily(state){
+    try{ localStorage.setItem(DAILY_KEY, JSON.stringify(state)); }catch(e){}
+  }
+
+  var dailyState = readDaily();
+
+  function ensureDaily(){
+    var key = todayKey();
+    var stillValid = dailyState && dailyState.date === key &&
+      dailyState.ids.some(function(id){
+        return words.some(function(w){ return w.id === id; });
+      });
+    if(stillValid) return dailyState;
+
+    var picked = seededOrder(unlearnedWords(), key)
+      .slice(0, DAILY_SIZE)
+      .map(function(w){ return w.id; });
+    dailyState = { date: key, ids: picked };
+    writeDaily(dailyState);
+    return dailyState;
+  }
+
+  function dailyAssigned(){
+    var ids = ensureDaily().ids;
+    return words.filter(function(w){ return ids.indexOf(w.id) !== -1; });
+  }
+  function dailyPool(){
+    return dailyAssigned().filter(function(w){ return !w.learned; });
+  }
+
+  function createDeck(cfg){
+    var deck = {
+      panel: byId(cfg.panel),
+      empty: byId(cfg.empty),
+      allDone: cfg.allDone ? byId(cfg.allDone) : null,
+      content: byId(cfg.content),
+      counter: byId(cfg.counter),
+      langTag: byId(cfg.langTag),
+      actionBtn: byId(cfg.actionBtn),
+      progress: byId(cfg.progress),
+      headwordZone: byId(cfg.headwordZone),
+      headword: byId(cfg.headword),
+      phonetic: byId(cfg.phonetic),
+      revealHint: byId(cfg.revealHint),
+      speakBtn: byId(cfg.speakBtn),
+      revealBox: byId(cfg.revealBox),
+      meaning: byId(cfg.meaning),
+      example: byId(cfg.example),
+      prevBtn: byId(cfg.prevBtn),
+      nextBtn: byId(cfg.nextBtn),
+      getPool: cfg.getPool,
+      onAction: cfg.onAction,
+      onRender: cfg.onRender || null,
+      index: 0,
+      revealed: false
+    };
+
+    deck.current = function(){
+      var pool = deck.getPool();
+      return pool.length ? (pool[deck.index] || pool[0]) : null;
+    };
+
+    deck.setRevealed = function(state){
+      deck.revealed = state;
+      deck.revealBox.classList.toggle('open', state);
+      deck.revealHint.textContent = state ? 'nhấn lại để ẩn nghĩa' : 'nhấn vào chữ để xem nghĩa & ví dụ';
+    };
+
+    deck.render = function(){
+      var pool = deck.getPool();
+      var learnedTotal = words.length - unlearnedWords().length;
+
+      if(deck.allDone){
+        deck.empty.classList.toggle('hidden', words.length !== 0);
+        deck.allDone.classList.toggle('hidden', !(words.length > 0 && pool.length === 0));
+      } else {
+        deck.empty.classList.toggle('hidden', pool.length !== 0);
+      }
+      deck.content.classList.toggle('hidden', pool.length === 0);
+      if(deck.onRender) deck.onRender(pool);
+      if(pool.length === 0) return;
+
+      if(deck.index >= pool.length) deck.index = 0;
+      if(deck.index < 0) deck.index = pool.length - 1;
+      var w = pool[deck.index];
+
+      deck.counter.textContent = pad(deck.index+1) + ' / ' + pad(pool.length);
+      deck.langTag.textContent = w.lang === 'ja' ? 'JP' : 'EN';
+      deck.headword.textContent = w.word;
+      deck.phonetic.textContent = w.phonetic || '';
+      deck.phonetic.style.display = w.phonetic ? '' : 'none';
+      deck.meaning.textContent = w.meaning || '(chưa có nghĩa)';
+      deck.example.textContent = w.example || '(chưa có câu ví dụ)';
+      deck.progress.textContent = 'đã học ' + learnedTotal + ' / ' + words.length + ' từ';
+
+      deck.setRevealed(deck.revealed);
+
+      var canSpeak = 'speechSynthesis' in window;
+      deck.speakBtn.disabled = !canSpeak;
+      deck.speakBtn.title = canSpeak ? 'Nghe phát âm' : 'Trình duyệt không hỗ trợ đọc phát âm';
+    };
+
+    deck.goTo = function(index){
+      deck.index = index;
+      deck.setRevealed(false);
+      deck.render();
+    };
+    deck.next = function(){
+      var n = deck.getPool().length;
+      deck.goTo(n ? (deck.index + 1) % n : 0);
+    };
+    deck.prev = function(){
+      var n = deck.getPool().length;
+      deck.goTo(n ? (deck.index - 1 + n) % n : 0);
+    };
+
+    deck.speak = function(){
+      var w = deck.current();
+      if(!w || !('speechSynthesis' in window)) return;
+      var utter = new SpeechSynthesisUtterance(w.word);
+      utter.lang = w.lang === 'ja' ? 'ja-JP' : 'en-US';
+      utter.rate = 0.95;
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.speak(utter);
+    };
+
+    deck.headwordZone.addEventListener('click', function(){ deck.setRevealed(!deck.revealed); });
+    deck.speakBtn.addEventListener('click', function(e){ e.stopPropagation(); deck.speak(); });
+    deck.prevBtn.addEventListener('click', deck.prev);
+    deck.nextBtn.addEventListener('click', deck.next);
+    deck.actionBtn.addEventListener('click', function(e){
+      e.stopPropagation();
+      var w = deck.current();
+      if(!w) return;
+      deck.onAction(w);
+      save(words);
+      deck.setRevealed(false);
+      renderAll();
+    });
+
+    return deck;
+  }
+
+  var todayDeck = createDeck({
+    panel:'todayPanel', empty:'todayEmpty', allDone:'todayDone', content:'todayContent',
+    counter:'tCounterLabel', langTag:'tLangTag', actionBtn:'tDoneBtn', progress:'tProgressLine',
+    headwordZone:'tHeadwordZone', headword:'tHeadword', phonetic:'tPhonetic', revealHint:'tRevealHint',
+    speakBtn:'tSpeakBtn', revealBox:'tRevealBox', meaning:'tMeaningText', example:'tExampleText',
+    prevBtn:'tPrevBtn', nextBtn:'tNextBtn',
+    getPool: dailyPool,
+    onAction: function(w){ w.learned = true; },
+    onRender: function(){
+      var assigned = dailyAssigned();
+      var done = assigned.filter(function(w){ return w.learned; }).length;
+      var total = assigned.length;
+      el.todayDate.textContent = formatToday();
+      el.todayProgress.textContent = done + ' / ' + (total || DAILY_SIZE) + ' từ';
+      el.todayProgress.classList.toggle('is-complete', total > 0 && done === total);
+
+      el.todayDoneCount.textContent = total < DAILY_SIZE
+        ? 'Bạn đã học xong ' + total + ' từ — sổ tay chỉ còn bấy nhiêu từ chưa học.'
+        : 'Bạn đã học xong ' + total + ' từ.';
+
+      var remaining = unlearnedWords().length;
+      el.todayDoneNote.textContent = remaining > 0
+        ? 'Danh sách ' + Math.min(DAILY_SIZE, remaining) + ' từ mới sẽ xuất hiện vào ngày mai, ' + formatTomorrow() + '.'
+        : 'Bạn đã học hết toàn bộ sổ tay. Thêm từ mới hoặc chuyển vài từ về “chưa học” để có bài cho ngày mai.';
+      el.todayMoreBtn.classList.toggle('hidden', remaining === 0);
+    }
+  });
+
+  var studyDeck = createDeck({
+    panel:'studyPanel', empty:'studyEmpty', allDone:'studyAllDone', content:'studyContent',
+    counter:'counterLabel', langTag:'langTag', actionBtn:'doneBtn', progress:'progressLine',
+    headwordZone:'headwordZone', headword:'headword', phonetic:'phonetic', revealHint:'revealHint',
+    speakBtn:'speakBtn', revealBox:'revealBox', meaning:'meaningText', example:'exampleText',
+    prevBtn:'prevBtn', nextBtn:'nextBtn',
+    getPool: unlearnedWords,
+    onAction: function(w){ w.learned = true; }
+  });
+
+  var reviewDeck = createDeck({
+    panel:'reviewPanel', empty:'reviewEmpty', content:'reviewContent',
+    counter:'rCounterLabel', langTag:'rLangTag', actionBtn:'relearnBtn', progress:'rProgressLine',
+    headwordZone:'rHeadwordZone', headword:'rHeadword', phonetic:'rPhonetic', revealHint:'rRevealHint',
+    speakBtn:'rSpeakBtn', revealBox:'rRevealBox', meaning:'rMeaningText', example:'rExampleText',
+    prevBtn:'rPrevBtn', nextBtn:'rNextBtn',
+    getPool: learnedWords,
+    onAction: function(w){ w.learned = false; }
+  });
+
+  var WEEKDAYS = ['Chủ nhật','Thứ hai','Thứ ba','Thứ tư','Thứ năm','Thứ sáu','Thứ bảy'];
+  function formatDate(d){
+    return WEEKDAYS[d.getDay()] + ', ' + pad(d.getDate()) + '/' + pad(d.getMonth()+1) + '/' + d.getFullYear();
+  }
+  function formatToday(){ return formatDate(new Date()); }
+  function formatTomorrow(){
+    var d = new Date();
+    d.setDate(d.getDate() + 1);
+    return formatDate(d);
+  }
+
+  function renderAll(){
+    todayDeck.render();
+    studyDeck.render();
+    reviewDeck.render();
+    renderList();
+  }
+
+  var COMBINING_MARKS = new RegExp('[\\u0300-\\u036f]', 'g');
+  function normalizeText(s){
+    return (s || '').toLowerCase()
+      .normalize('NFD').replace(COMBINING_MARKS, '')
+      .replace(/đ/g, 'd');
+  }
+
+  function matchesSearch(w){
+    if(!searchQuery) return true;
+    var haystack = normalizeText([w.word, w.phonetic, w.meaning, w.example].join(' '));
+    return haystack.indexOf(searchQuery) !== -1;
+  }
+
+  function renderList(){
+    var matched = words.filter(matchesSearch);
+    var learnedList = matched.filter(function(w){ return w.learned; });
+    var unlearnedList = matched.filter(function(w){ return !w.learned; });
+    var searching = !!searchQuery;
+
+    el.listCount.textContent = words.length + ' từ';
+    el.unlearnedCount.textContent = unlearnedList.length;
+    el.learnedCount.textContent = learnedList.length;
+
+    el.searchStatus.classList.toggle('hidden', !searching);
+    if(searching){
+      el.searchStatus.textContent = matched.length === 0
+        ? 'không tìm thấy từ nào khớp với “' + el.searchInput.value.trim() + '”'
+        : matched.length + ' kết quả cho “' + el.searchInput.value.trim() + '”';
+    }
+    el.searchClearBtn.classList.toggle('hidden', !searching);
+
+    fillSection(el.unlearnedList, unlearnedList,
+      searching ? 'Không có kết quả trong mục này.' : 'Không còn từ nào chưa học.');
+    fillSection(el.learnedList, learnedList,
+      searching ? 'Không có kết quả trong mục này.' : 'Chưa có từ nào được đánh dấu đã học.');
+  }
+
+  function fillSection(container, list, emptyMessage){
+    container.innerHTML = '';
+    if(list.length === 0){
+      var empty = document.createElement('div');
+      empty.className = 'section-empty';
+      empty.textContent = emptyMessage;
+      container.appendChild(empty);
+      return;
+    }
+    list.forEach(function(w){
+      container.appendChild(buildRow(w));
+    });
+  }
+
+  function buildRow(w){
+      var row = document.createElement('div');
+      row.className = 'word-row';
+
+      var wordCol = document.createElement('div');
+      wordCol.innerHTML = '<span class="w-word"></span><span class="lang-tag"></span>' + (w.phonetic ? '<span class="w-phonetic"></span>' : '');
+      wordCol.querySelector('.w-word').textContent = w.word;
+      wordCol.querySelector('.lang-tag').textContent = w.lang === 'ja' ? 'JP' : 'EN';
+      if(w.phonetic) wordCol.querySelector('.w-phonetic').textContent = w.phonetic;
+
+      var meaningCol = document.createElement('div');
+      meaningCol.className = 'w-meaning';
+      meaningCol.textContent = w.meaning;
+
+      var chip = document.createElement('button');
+      chip.className = 'status-chip' + (w.learned ? ' is-learned' : '');
+      chip.textContent = w.learned ? 'học lại' : 'học xong';
+      chip.title = w.learned ? 'Chuyển về danh sách chưa học' : 'Chuyển sang danh sách đã học';
+      chip.addEventListener('click', function(){
+        w.learned = !w.learned;
+        save(words);
+        renderAll();
+      });
+
+      var actions = document.createElement('div');
+      actions.className = 'row-actions';
+
+      var editBtn = document.createElement('button');
+      editBtn.className = 'icon-btn';
+      editBtn.title = 'Sửa';
+      editBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>';
+      editBtn.addEventListener('click', function(){ openModal(w.id); });
+
+      var delBtn = document.createElement('button');
+      delBtn.className = 'icon-btn danger';
+      delBtn.title = 'Xoá';
+      delBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path><path d="M10 11v6"></path><path d="M14 11v6"></path><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"></path></svg>';
+      delBtn.addEventListener('click', function(){
+        showConfirm('Xoá từ "' + w.word + '" khỏi sổ tay? Không thể hoàn tác.', function(){
+          var idx = words.findIndex(function(x){ return x.id === w.id; });
+          if(idx === -1) return;
+          words.splice(idx, 1);
+          save(words);
+          renderAll();
+        });
+      });
+
+      actions.appendChild(editBtn);
+      actions.appendChild(delBtn);
+
+      row.appendChild(wordCol);
+      row.appendChild(meaningCol);
+      row.appendChild(chip);
+      row.appendChild(actions);
+      return row;
+  }
+
+  function openModal(id){
+    editingId = id || null;
+    if(editingId){
+      var w = words.find(function(x){ return x.id === editingId; });
+      el.modalTitle.textContent = 'Sửa từ vựng';
+      el.fLang.value = w.lang === 'ja' ? 'ja' : 'en';
+      el.fWord.value = w.word;
+      el.fPhonetic.value = w.phonetic || '';
+      el.fMeaning.value = w.meaning || '';
+      el.fExample.value = w.example || '';
+    } else {
+      el.modalTitle.textContent = 'Thêm từ mới';
+      el.wordForm.reset();
+    }
+    el.modalBackdrop.classList.remove('hidden');
+    el.fWord.focus();
+  }
+  function closeModal(){
+    el.modalBackdrop.classList.add('hidden');
+    editingId = null;
+  }
+
+  var pendingConfirmAction = null;
+  function showConfirm(message, onConfirm){
+    el.confirmMessage.textContent = message;
+    pendingConfirmAction = onConfirm;
+    el.confirmBackdrop.classList.remove('hidden');
+    el.confirmOkBtn.focus();
+  }
+  function closeConfirm(){
+    el.confirmBackdrop.classList.add('hidden');
+    pendingConfirmAction = null;
+  }
+  el.confirmOkBtn.addEventListener('click', function(){
+    var action = pendingConfirmAction;
+    closeConfirm();
+    if(action) action();
+  });
+  el.confirmCancelBtn.addEventListener('click', closeConfirm);
+  el.confirmBackdrop.addEventListener('click', function(e){
+    if(e.target === el.confirmBackdrop) closeConfirm();
+  });
+
+  el.wordForm.addEventListener('submit', function(e){
+    e.preventDefault();
+    var data = {
+      lang: el.fLang.value === 'ja' ? 'ja' : 'en',
+      word: el.fWord.value.trim(),
+      phonetic: el.fPhonetic.value.trim(),
+      meaning: el.fMeaning.value.trim(),
+      example: el.fExample.value.trim()
+    };
+    if(!data.word || !data.meaning) return;
+
+    if(editingId){
+      var w = words.find(function(x){ return x.id === editingId; });
+      Object.assign(w, data);
+    } else {
+      words.push(Object.assign({id:uid(), learned:false}, data));
+    }
+    save(words);
+    closeModal();
+    renderAll();
+  });
+
+  el.cancelModalBtn.addEventListener('click', closeModal);
+  el.modalBackdrop.addEventListener('click', function(e){
+    if(e.target === el.modalBackdrop) closeModal();
+  });
+  el.addWordBtn.addEventListener('click', function(){ openModal(null); });
+  el.emptyAddBtn.addEventListener('click', function(){
+    switchTab('list');
+    openModal(null);
+  });
+  el.allDoneListBtn.addEventListener('click', function(){ switchTab('list'); });
+
+  el.searchInput.addEventListener('input', function(){
+    searchQuery = normalizeText(el.searchInput.value.trim());
+    renderList();
+  });
+  el.searchClearBtn.addEventListener('click', function(){
+    el.searchInput.value = '';
+    searchQuery = '';
+    renderList();
+    el.searchInput.focus();
+  });
+
+  function switchTab(tab){
+    el.tabTodayBtn.classList.toggle('active', tab === 'today');
+    el.tabStudyBtn.classList.toggle('active', tab === 'study');
+    el.tabReviewBtn.classList.toggle('active', tab === 'review');
+    el.tabListBtn.classList.toggle('active', tab === 'list');
+    el.todayPanel.classList.toggle('hidden', tab !== 'today');
+    el.studyPanel.classList.toggle('hidden', tab !== 'study');
+    el.reviewPanel.classList.toggle('hidden', tab !== 'review');
+    el.listPanel.classList.toggle('hidden', tab !== 'list');
+    if(tab === 'today') todayDeck.render();
+    if(tab === 'review') reviewDeck.render();
+    if(tab === 'list') renderList();
+  }
+  el.tabTodayBtn.addEventListener('click', function(){ switchTab('today'); });
+  el.tabStudyBtn.addEventListener('click', function(){ switchTab('study'); });
+  el.tabReviewBtn.addEventListener('click', function(){ switchTab('review'); });
+  el.tabListBtn.addEventListener('click', function(){ switchTab('list'); });
+  el.todayAddBtn.addEventListener('click', function(){
+    switchTab('list');
+    openModal(null);
+  });
+  el.todayMoreBtn.addEventListener('click', function(){ switchTab('study'); });
+
+  function activeDeck(){
+    if(!el.todayPanel.classList.contains('hidden')) return todayDeck;
+    if(!el.studyPanel.classList.contains('hidden')) return studyDeck;
+    if(!el.reviewPanel.classList.contains('hidden')) return reviewDeck;
+    return null;
+  }
+
+  /* ---------- nhắc học hằng ngày ---------- */
+  var REMINDER_KEY = STORAGE_KEY + '-reminder-v1';
+
+  function readReminder(){
+    try{
+      var raw = localStorage.getItem(REMINDER_KEY);
+      if(raw) return JSON.parse(raw);
+    }catch(e){}
+    return { enabled:false, time:'09:00', lastFired:'' };
+  }
+  function writeReminder(state){
+    try{ localStorage.setItem(REMINDER_KEY, JSON.stringify(state)); }catch(e){}
+  }
+
+  var reminder = readReminder();
+
+  function setReminderNote(text, isWarning){
+    el.reminderNote.textContent = text;
+    el.reminderNote.classList.toggle('is-warning', !!isWarning);
+  }
+
+  function notificationState(){
+    if(!('Notification' in window)) return 'unsupported';
+    return Notification.permission;
+  }
+
+  function refreshReminderUI(){
+    el.reminderToggle.checked = reminder.enabled;
+    el.reminderTime.value = reminder.time;
+    if(!reminder.enabled){
+      setReminderNote('Thông báo chỉ hiện khi tab này đang mở trong trình duyệt.', false);
+      return;
+    }
+    var state = notificationState();
+    if(state === 'granted'){
+      setReminderNote('Đang bật. Mỗi ngày đến ' + reminder.time + ', trình duyệt sẽ báo khi tab này còn mở.', false);
+    } else if(state === 'denied'){
+      setReminderNote('Trình duyệt đã chặn thông báo cho trang này. App vẫn sẽ hiện nhắc ngay trong tab Bài hôm nay; muốn có thông báo hệ thống thì bật lại quyền Notifications trong cài đặt trình duyệt.', true);
+    } else {
+      setReminderNote('Chưa cấp quyền thông báo. App vẫn hiện nhắc trong tab Bài hôm nay khi đến giờ.', true);
+    }
+  }
+
+  function dailySummary(){
+    var pool = dailyPool();
+    if(pool.length === 0) return 'Hôm nay bạn đã học xong bài rồi.';
+    var names = pool.slice(0, 3).map(function(w){ return w.word; }).join(', ');
+    return 'Còn ' + pool.length + ' từ: ' + names + (pool.length > 3 ? '…' : '');
+  }
+
+  function fireReminder(){
+    var title = 'Đến giờ học từ vựng';
+    var body = dailySummary();
+    if(notificationState() === 'granted'){
+      try{
+        var n = new Notification(title, { body: body, tag: 'vocab-daily' });
+        n.onclick = function(){ try{ window.focus(); }catch(e){} };
+      }catch(e){}
+    }
+    switchTab('today');
+    setReminderNote('⏰ ' + title + ' — ' + body, false);
+  }
+
+  function checkReminder(){
+    if(!reminder.enabled) return;
+    var key = todayKey();
+    if(reminder.lastFired === key) return;
+    var parts = (reminder.time || '09:00').split(':');
+    var due = new Date();
+    due.setHours(parseInt(parts[0], 10) || 0, parseInt(parts[1], 10) || 0, 0, 0);
+    if(new Date() < due) return;
+    reminder.lastFired = key;
+    writeReminder(reminder);
+    fireReminder();
+  }
+
+  el.reminderToggle.addEventListener('change', function(){
+    reminder.enabled = el.reminderToggle.checked;
+    reminder.lastFired = '';
+    writeReminder(reminder);
+    if(reminder.enabled && notificationState() === 'default'){
+      try{
+        Notification.requestPermission().then(function(){ refreshReminderUI(); });
+      }catch(e){}
+    }
+    refreshReminderUI();
+    checkReminder();
+  });
+  el.reminderTime.addEventListener('change', function(){
+    reminder.time = el.reminderTime.value || '09:00';
+    reminder.lastFired = '';
+    writeReminder(reminder);
+    refreshReminderUI();
+  });
+
+  refreshReminderUI();
+
+  var renderedDay = todayKey();
+  setInterval(function(){
+    if(todayKey() !== renderedDay){
+      renderedDay = todayKey();
+      todayDeck.index = 0;
+      renderAll();
+    }
+    checkReminder();
+  }, 30000);
+
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape'){
+      if(!el.confirmBackdrop.classList.contains('hidden')) closeConfirm();
+      else if(!el.modalBackdrop.classList.contains('hidden')) closeModal();
+      return;
+    }
+    if(!el.confirmBackdrop.classList.contains('hidden')) return;
+    if(!el.modalBackdrop.classList.contains('hidden')) return;
+    var deck = activeDeck();
+    if(!deck) return;
+    var tag = (document.activeElement && document.activeElement.tagName) || '';
+    if(tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+    if(e.key === 'ArrowRight'){ deck.next(); }
+    else if(e.key === 'ArrowLeft'){ deck.prev(); }
+    else if(e.key === 'Enter'){
+      if(tag === 'BUTTON' || tag === 'A') return;
+      if(deck.getPool().length === 0) return;
+      e.preventDefault();
+      deck.setRevealed(!deck.revealed);
+    }
+  });
+
+  renderAll();
+  checkReminder();
+})();
+</script>
